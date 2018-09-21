@@ -109,7 +109,7 @@
 				this.$confirm('确认退出吗?', '提示', {
 					//type: 'warning'
 				}).then(() => {
-					sessionStorage.removeItem('user');
+					sessionStorage.removeItem('phone');
 					_this.$router.push('/login');
 				}).catch(() => {
 
@@ -126,11 +126,10 @@
 			}
 		},
 		mounted() {
-			var user = sessionStorage.getItem('user');
+      var user = localStorage.getItem('phone');
 			if (user) {
 				user = JSON.parse(user);
-				this.sysUserName = user.name || '1233';
-				this.sysUserAvatar = user.avatar || '';
+				this.sysUserName = user || '';
 			}
 
 		}

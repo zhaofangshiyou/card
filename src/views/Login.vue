@@ -102,7 +102,7 @@
           }
           clientLogin(params).then((res) => {
             if (res.data.status === 0) {
-              localStorage.setItem('isLogin', true)
+              localStorage.setItem('phone', this.mobile)
               this.$router.push({ path: '/account_manerge' });
             }else{
               messageWarn(res.data.msg);

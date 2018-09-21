@@ -14,7 +14,7 @@ let instance = axios.create({
   instance.interceptors.response.use(res => {
     if(res.data.status === 401 || res.data.status === 402) {
       window.location.href = '/#/login';
-      localStorage.removeItem('isLogin')
+      localStorage.removeItem('phone')
     } 
     return res;
   },function (error)  {
