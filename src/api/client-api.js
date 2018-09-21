@@ -13,8 +13,8 @@ let instance = axios.create({
 
   instance.interceptors.response.use(res => {
     if(res.data.status === 401 || res.data.status === 402) {
-      window.location.href = '/#/client-login';
-      localStorage.removeItem('clientFlag')
+      window.location.href = '/#/login';
+      localStorage.removeItem('isLogin')
     } 
     return res;
   },function (error)  {
@@ -62,3 +62,6 @@ export const comsumeDetail = params => { return instance.get(`${url}/backen/cus_
 
 //消费查询-消费汇总
 export const comsumeAll = params => { return instance.get(`${url}/backen/cus_query/consume/summary`, { params: params }); };
+
+//消费查询-消费核查
+export const comsumeCheck = params => { return instance.get(`${url}/backen/cus_query/consume/check`, { params: params }); };

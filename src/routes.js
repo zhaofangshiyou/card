@@ -8,6 +8,7 @@ import clientAccountManerge from './clientManerger/accountManerge/accountManerge
 import ClientSecondCard from './clientManerger/secondCard/secondCard'
 import ClientComsumeDetail from './clientManerger/comsumeDetail/comsumeDetail'
 import ClientComsumeAll from './clientManerger/comsumeAll/comsumeAll'
+import ClientComsumeCheck from './clientManerger/comsumeCheck/comsumeCheck'
 
 
 let routes = [
@@ -41,6 +42,7 @@ let routes = [
       children: [
           { path: '/client_comsume_detail', component: ClientComsumeDetail, name: '消费明细' },
           { path: '/client_comsume_all', component: ClientComsumeAll, name: '消费汇总' },
+          { path: '/client_comsume_check', component: ClientComsumeCheck, name: '消费核查' },
       ]
     },
     //{ path: '/main', component: Main },

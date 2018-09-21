@@ -3,11 +3,14 @@
     <!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true">
-            <el-form-item label="卡号">
-              <el-input v-model="card_no"  placeholder="请输入卡号"></el-input>
+            <el-form-item label="加油次数大于(次)：">
+              <el-input v-model="times" type="number" :min="0" style="width: 150px"></el-input>
             </el-form-item>
-            <el-form-item label="手机号">
-              <el-input v-model="mobile"  placeholder="请输入手机号"></el-input>
+            <el-form-item label="加油总量大于(升)：">
+              <el-input type="number" v-model="vol" :min="0" style="width: 150px"></el-input>
+            </el-form-item>
+            <el-form-item label="单比加油量大于油箱容量(%)：">
+              <el-input v-model="rate" type="number" :step="0.01" :min="0.00" :max="10" style="width: 150px"></el-input>
             </el-form-item>
             <el-form-item label="时间">
                 <el-date-picker
@@ -29,14 +32,6 @@
         <div class="tab_head_title">消费列表</div>
         <el-button type="success" size="small" @click="outExcelTable">&nbsp;&nbsp;导出&nbsp;&nbsp;</el-button>
     </el-col>
-    <el-col :span="24" class="tab_header">
-        <div class="tab_head_title">总计</div>
-        <div style="float: right">
-          <span>时间段：{{begin_time}}至{{end_time}}</span>
-          <span style="margin-left: 50px">加油总升数(升)：{{consum_list_sum.vol}}</span>
-          <span style="margin-left: 50px">消费总金额(元)：{{consum_list_sum.money}}</span>
-				</div>
-    </el-col>
 		<el-table :data="initList" highlight-current-row v-loading="listLoading"  style="width: 100%;">
 			<el-table-column type="index" label="序号" width="100">
 			</el-table-column>
@@ -52,35 +47,39 @@
 			</el-table-column>
       <el-table-column prop="t_vol" label="总升数">
 			</el-table-column>
+      <el-table-column prop="t_time" label="加油次数">
+			</el-table-column>
+      <el-table-column prop="per_t_vol" label="加油次数">
+			</el-table-column>
       <el-table-column prop="t1_vol" label="92#总升数" width="120">
 			</el-table-column>
-      <el-table-column prop="t1_money" label="92#总金额"  width="120">
+      <el-table-column prop="per_t1_vol" label="92#单比加油量"  width="120">
 			</el-table-column>
-      <el-table-column prop="per_t1_vol" label="92#单比升数" width="120">
+      <el-table-column prop="t1_times" label="92#加油次数" width="120">
 			</el-table-column>
       <el-table-column prop="t2_vol" label="95#总升数" width="120">
 			</el-table-column>
-      <el-table-column prop="t2_money" label="95#总金额" width="120" >
+      <el-table-column prop="per_t2_vol" label="95#单比加油量" width="120" >
 			</el-table-column>
-      <el-table-column prop="per_t2_vol" label="95#单比升数" width="120">
+      <el-table-column prop="t2_times" label="95#加油次数" width="120">
 			</el-table-column>
       <el-table-column prop="t3_vol" label="98#总升数" width="120">
 			</el-table-column>
-      <el-table-column prop="t3_money" label="98#总金额" width="120">
+      <el-table-column prop="per_t3_vol" label="98#单比加油量" width="120">
 			</el-table-column>
-      <el-table-column prop="per_t3_vol" label="98#单比升数" width="120">
+      <el-table-column prop="t3_time" label="98#加油次数" width="120">
 			</el-table-column>
       <el-table-column prop="t4_vol" label="0#总升数" width="120">
 			</el-table-column>
-      <el-table-column prop="t4_money" label="0#总金额" width="120">
+      <el-table-column prop="per_t4_vol" label="0#单比加油量" width="120">
 			</el-table-column>
-      <el-table-column prop="per_t4_vol" label="0#单比升数" width="120">
+      <el-table-column prop="t4_time" label="0#加油次数" width="120">
 			</el-table-column>
       <el-table-column prop="t5_vol" label="-10#总升数" width="120">
 			</el-table-column>
-      <el-table-column prop="t5_money" label="-10#总金额" width="120">
+      <el-table-column prop="per_t5_vol" label="-10#单比加油量" width="120">
 			</el-table-column>
-      <el-table-column prop="per_t5_vol" label="-10#单比升数" width="130">
+      <el-table-column prop="t5_time" label="-10#加油次数" width="130">
 			</el-table-column>
 		</el-table>
     
@@ -93,7 +92,7 @@
 </template>
 
 <script>
-  import { comsumeAll } from '../../api/client-api';
+  import { comsumeCheck } from '../../api/client-api';
 	import { messageWarn } from '../../common/js/commonMethod';
   export default {
     data() {
@@ -104,22 +103,27 @@
         total: 0,
         begin_time: '',
         end_time: '',
-        card_no: '',
+        times: '',
+        vol: '',
+        rate: '',
         mobile: '',
         page_num: 1,
         num: 15,
-        consum_list_sum: {}
       }
     },
     created: function() {
-        this.getList(this.card_no,this.mobile,this.begin_time,this.end_time,this.page_num,this.num);
+        this.getList(this.times,this.vol,this.rate,this.begin_time,this.end_time,this.page_num,this.num);
     },
     methods: {
+      handleChangeTime(val) {
+        console.log(val)
+        console.log(123)
+        
+      },
       search: function() {
         this.begin_time = "";
         this.end_time = "";
         if(this.time[0]) {
-          console.log(this.time[0].toLocaleString())
           let begin_date = new Date(this.time[0]);
           this.begin_time = begin_date.getFullYear() + '-' + (begin_date.getMonth() + 1) + '-' + begin_date.getDate() + ' ' + begin_date.getHours() + ':' + begin_date.getMinutes() + ':' + begin_date.getSeconds(); 
         }
@@ -127,29 +131,30 @@
           let end_date = new Date(this.time[1]);
           this.end_time = end_date.getFullYear() + '-' + (end_date.getMonth() + 1) + '-' + end_date.getDate() + ' ' + end_date.getHours() + ':' + end_date.getMinutes() + ':' + end_date.getSeconds(); 
         }
-        this.getList(this.card_no,this.mobile,this.begin_time,this.end_time,this.page_num,this.num);
+        this.getList(this.times,this.vol,this.rate,this.begin_time,this.end_time,this.page_num,this.num);
       },
       handleCurrentChange: function(val) {
         this.page_num = val;
-        this.getList(this.card_no,this.mobile,this.begin_time,this.end_time,this.page_num,this.num);
+        this.getList(this.times,this.vol,this.rate,this.begin_time,this.end_time,this.page_num,this.num);
 
       },
-      getList: function(card_no,mobile,begin_time,end_time,page_num,num) {
+      getList: function(times,vol,rate,begin_time,end_time,page_num,num) {
+        if (rate) {
+          rate = rate +'%'
+        }
         let params ={
-          card_no: card_no,
-          mobile: mobile,
+          times: times,
+          vol: vol,
+          rate: rate,
           begin_time: begin_time,
           end_time: end_time,
           page_num: page_num,
           num: num
         }
-        comsumeAll(params).then( res=> {
+        comsumeCheck(params).then( res=> {
           if(res.data.status === 0) {
             this.initList = res.data.data.consume_list;
             this.total = res.data.data.consume_list_cnt;
-            this.begin_time = res.data.data.begin_time;
-            this.end_time = res.data.data.end_time;
-            this.consum_list_sum = res.data.data.consum_list_sum
           }else{
             messageWarn(res.data.msg);
           }
@@ -157,8 +162,8 @@
       },
       //导出表格
       outExcelTable() {
-        let data = '&card_no='+ this.card_no + '&mobile=' + this.mobile + '&begin_time='+ this.begin_time + '&end_time=' + this.end_time; 
-        window.open(this.GLOBAL.url + '/backen/cus_query/consume/summary?act=export'+data, '_blank');
+        let data = '&time='+ this.time + '&vol=' + this.vol + '&rate=' + this.rate + '&begin_time='+ this.begin_time + '&end_time=' + this.end_time; 
+        window.open(this.GLOBAL.url + '/backen/cus_query/consume/check?act=export'+data, '_blank');
       }
     }
   }
