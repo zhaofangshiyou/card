@@ -40,7 +40,7 @@ let routes = [
       iconCls: 'iconfont icon-manage',
       children: [
           { path: '/client_comsume_detail', component: ClientComsumeDetail, name: '消费明细' },
-          { path: '/client_comsume_all', component: ClientComsumeAll, name: '消费明细' },
+          { path: '/client_comsume_all', component: ClientComsumeAll, name: '消费汇总' },
       ]
     },
     //{ path: '/main', component: Main },

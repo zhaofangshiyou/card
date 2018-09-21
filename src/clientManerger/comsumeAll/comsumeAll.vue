@@ -42,45 +42,45 @@
 			</el-table-column>
 			<el-table-column prop="name" label="姓名">
 			</el-table-column>
-			<el-table-column prop="card_no" label="卡号">
+			<el-table-column prop="card_no" label="卡号" width="150">
 			</el-table-column>
 			<el-table-column prop="card_type" label="卡类型">
 			</el-table-column>
-			<el-table-column prop="car_type" label="车型">
+			<el-table-column prop="car_type" label="车型" width="100">
 			</el-table-column>
-			<el-table-column prop="car_vol" label="油箱容量">
+			<el-table-column prop="car_vol" label="油箱容量" width="100">
 			</el-table-column>
-      <el-table-column prop="station_name" label="总升数">
+      <el-table-column prop="t_vol" label="总升数">
 			</el-table-column>
-      <el-table-column prop="oil_type" label="92#总升数">
+      <el-table-column prop="t1_vol" label="92#总升数" width="120">
 			</el-table-column>
-      <el-table-column prop="vol" label="92#总金额">
+      <el-table-column prop="t1_money" label="92#总金额"  width="120">
 			</el-table-column>
-      <el-table-column prop="money" label="92#单比升数">
+      <el-table-column prop="per_t1_vol" label="92#单比升数" width="120">
 			</el-table-column>
-      <el-table-column prop="oil_type" label="95#总升数">
+      <el-table-column prop="t2_vol" label="95#总升数" width="120">
 			</el-table-column>
-      <el-table-column prop="vol" label="95#总金额">
+      <el-table-column prop="t2_money" label="95#总金额" width="120" >
 			</el-table-column>
-      <el-table-column prop="money" label="95#单比升数">
+      <el-table-column prop="per_t2_vol" label="95#单比升数" width="120">
 			</el-table-column>
-      <el-table-column prop="oil_type" label="98#总升数">
+      <el-table-column prop="t3_vol" label="98#总升数" width="120">
 			</el-table-column>
-      <el-table-column prop="vol" label="98#总金额">
+      <el-table-column prop="t3_money" label="98#总金额" width="120">
 			</el-table-column>
-      <el-table-column prop="money" label="98#单比升数">
+      <el-table-column prop="per_t3_vol" label="98#单比升数" width="120">
 			</el-table-column>
-      <el-table-column prop="oil_type" label="0#总升数">
+      <el-table-column prop="t4_vol" label="0#总升数" width="120">
 			</el-table-column>
-      <el-table-column prop="vol" label="0#总金额">
+      <el-table-column prop="t4_money" label="0#总金额" width="120">
 			</el-table-column>
-      <el-table-column prop="money" label="0#单比升数">
+      <el-table-column prop="per_t4_vol" label="0#单比升数" width="120">
 			</el-table-column>
-      <el-table-column prop="oil_type" label="10#总升数">
+      <el-table-column prop="t5_vol" label="-10#总升数" width="120">
 			</el-table-column>
-      <el-table-column prop="vol" label="10#总金额">
+      <el-table-column prop="t5_money" label="-10#总金额" width="120">
 			</el-table-column>
-      <el-table-column prop="money" label="10#单比升数">
+      <el-table-column prop="per_t5_vol" label="-10#单比升数" width="130">
 			</el-table-column>
 		</el-table>
     
@@ -153,7 +153,7 @@
       //导出表格
       outExcelTable() {
         let data = '&card_no='+ this.card_no + '&mobile=' + this.mobile + '&begin_time='+ this.begin_time + '&end_time=' + this.end_time; 
-        window.open(this.GLOBAL.url + '/backen/cus_query/consume/detail?act=export'+data, '_blank');
+        window.open(this.GLOBAL.url + '/backen/cus_query/consume/summary?act=export'+data, '_blank');
       }
     }
   }
