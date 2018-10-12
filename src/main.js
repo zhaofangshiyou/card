@@ -33,7 +33,7 @@ router.beforeEach((to, from, next) => {
   if (to.path == '/login') {
     localStorage.removeItem('phone');
   }
-  let user = localStorage.getItem('isLogin');
+  let user = localStorage.getItem('phone');
   if (!user && to.path != '/login') {
     next({ path: '/login' })
   } else {
